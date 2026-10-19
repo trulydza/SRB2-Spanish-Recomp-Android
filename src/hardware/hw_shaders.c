@@ -280,7 +280,11 @@ static char *HWR_PreprocessShader(char *original)
 	if (cv_glmodellighting.value)
 		ADD_TO_LEN(MODEL_LIGHTING_DEFINE)
 	if (cv_glpaletterendering.value)
+	{
+#ifndef ANDROID
 		ADD_TO_LEN(PALETTE_RENDERING_DEFINE)
+#endif
+	}
 
 #undef ADD_TO_LEN
 
@@ -323,7 +327,13 @@ static char *HWR_PreprocessShader(char *original)
 	if (cv_glmodellighting.value)
 		WRITE_DEFINE(MODEL_LIGHTING_DEFINE)
 	if (cv_glpaletterendering.value)
+	{
+#ifndef ANDROID
+		// Android uses gl4es (GLES2) which doesn't support sampler3D.
+		// Never inject this define even if the cvar was saved as "On" in config.cfg.
 		WRITE_DEFINE(PALETTE_RENDERING_DEFINE)
+#endif
+	}
 
 #undef WRITE_DEFINE
 

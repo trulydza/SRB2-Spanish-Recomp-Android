@@ -5722,7 +5722,13 @@ consvar_t cv_glbatching = CVAR_INIT ("gr_batching", "On", 0, CV_OnOff, NULL);
 
 static CV_PossibleValue_t glpalettedepth_cons_t[] = {{16, "16 bits"}, {24, "24 bits"}, {0, NULL}};
 
+#ifdef ANDROID
+// Android uses gl4es (GLES2) which lacks sampler3D, GL_TEXTURE_3D, and GL_TEXTURE_1D
+// required by the palette postprocessing shaders. Disable by default.
+consvar_t cv_glpaletterendering = CVAR_INIT ("gr_paletterendering", "Off", CV_SAVE|CV_CALL, CV_OnOff, CV_glpaletterendering_OnChange);
+#else
 consvar_t cv_glpaletterendering = CVAR_INIT ("gr_paletterendering", "On", CV_SAVE|CV_CALL, CV_OnOff, CV_glpaletterendering_OnChange);
+#endif
 consvar_t cv_glpalettedepth = CVAR_INIT ("gr_palettedepth", "16 bits", CV_SAVE|CV_CALL, glpalettedepth_cons_t, CV_glpalettedepth_OnChange);
 
 #define ONLY_IF_GL_LOADED if (vid.glstate != VID_GL_LIBRARY_LOADED) return;
@@ -5751,6 +5757,15 @@ static void CV_glmodellighting_OnChange(void)
 static void CV_glpaletterendering_OnChange(void)
 {
 	ONLY_IF_GL_LOADED
+#ifdef ANDROID
+	// Android uses gl4es (GLES2) which doesn't support sampler3D / GL_TEXTURE_3D.
+	// Force palette rendering off even if config.cfg saved it as "On".
+	if (cv_glpaletterendering.value)
+	{
+		CV_StealthSet(&cv_glpaletterendering, "Off");
+		return;
+	}
+#endif
 	if (gl_shadersavailable)
 	{
 		HWR_CompileShaders();

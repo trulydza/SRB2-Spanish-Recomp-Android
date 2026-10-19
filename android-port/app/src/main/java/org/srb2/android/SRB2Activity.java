@@ -93,11 +93,27 @@ public class SRB2Activity extends SDLActivity {
     @Override
     protected String[] getArguments() {
         String dataPath = getGameDataPath();
-        // Ensure addons subfolder exists so users know where to drop pk3/wad files
         new File(dataPath, "addons").mkdirs();
-        return new String[]{
-            "-home", dataPath,
-        };
+        java.util.List<String> argsList = new java.util.ArrayList<>();
+        argsList.add("-home");
+        argsList.add(dataPath);
+        Intent intent = getIntent();
+        if (intent != null) {
+            String[] extraArgs = intent.getStringArrayExtra("args");
+            if (extraArgs != null) {
+                for (String a : extraArgs) {
+                    argsList.add(a);
+                }
+            } else {
+                String singleArg = intent.getStringExtra("args");
+                if (singleArg != null && !singleArg.trim().isEmpty()) {
+                    for (String a : singleArg.trim().split("\\s+")) {
+                        argsList.add(a);
+                    }
+                }
+            }
+        }
+        return argsList.toArray(new String[0]);
     }
 
     /**

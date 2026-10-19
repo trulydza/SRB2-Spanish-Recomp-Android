@@ -71,9 +71,21 @@ PFNglGetString pglGetString;
 */
 INT32 oglflags = 0;
 SDL_GLContext sdlglcontext = 0;
+#ifdef ANDROID
+#include <dlfcn.h>
+extern void *gl4es_GetProcAddress(const char *name);
+#endif
 
 void *GetGLFunc(const char *proc)
 {
+#ifdef ANDROID
+	void *func = gl4es_GetProcAddress(proc);
+	if (func)
+		return func;
+	func = dlsym(RTLD_DEFAULT, proc);
+	if (func)
+		return func;
+#endif
 	return SDL_GL_GetProcAddress(proc);
 }
 

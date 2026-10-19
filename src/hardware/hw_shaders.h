@@ -119,6 +119,29 @@
 	"final_color.a = texel.a * poly_color.a;\n" \
 	"gl_FragColor = final_color;\n" \
 
+#ifdef ANDROID
+// Android: gl4es GLSL converter doesn't handle #ifdef directives properly.
+// Only include the standard (non-palette) rendering path.
+#define GLSL_SOFTWARE_FRAGMENT_SHADER \
+	"uniform sampler2D tex;\n" \
+	"uniform vec4 poly_color;\n" \
+	"uniform vec4 tint_color;\n" \
+	"uniform vec4 fade_color;\n" \
+	"uniform float lighting;\n" \
+	"uniform float fade_start;\n" \
+	"uniform float fade_end;\n" \
+	GLSL_DOOM_COLORMAP \
+	GLSL_DOOM_LIGHT_EQUATION \
+	"void main(void) {\n" \
+		"vec4 texel = texture2D(tex, gl_TexCoord[0].st);\n" \
+		"vec4 base_color = texel * poly_color;\n" \
+		"vec4 final_color = base_color;\n" \
+		GLSL_SOFTWARE_TINT_EQUATION \
+		GLSL_SOFTWARE_FADE_EQUATION \
+		"final_color.a = texel.a * poly_color.a;\n" \
+		"gl_FragColor = final_color;\n" \
+	"}\0"
+#else
 #define GLSL_SOFTWARE_FRAGMENT_SHADER \
 	"#ifdef SRB2_PALETTE_RENDERING\n" \
 	"uniform sampler2D tex;\n" \
@@ -151,6 +174,7 @@
 		"gl_FragColor = final_color;\n" \
 	"}\n" \
 	"#endif\0"
+#endif
 
 // hand tuned adjustments for light level calculation
 #define GLSL_FLOOR_FUDGES \
@@ -171,6 +195,30 @@
 
 // same as above but multiplies results with the lighting value from the
 // accompanying vertex shader (stored in gl_Color) if model lighting is enabled
+#ifdef ANDROID
+// Android: gl4es doesn't handle #ifdef in GLSL properly.
+// Only the standard rendering path, but keep model lighting support.
+#define GLSL_MODEL_FRAGMENT_SHADER \
+	GLSL_WALL_FUDGES \
+	"uniform sampler2D tex;\n" \
+	"uniform vec4 poly_color;\n" \
+	"uniform vec4 tint_color;\n" \
+	"uniform vec4 fade_color;\n" \
+	"uniform float lighting;\n" \
+	"uniform float fade_start;\n" \
+	"uniform float fade_end;\n" \
+	GLSL_DOOM_COLORMAP \
+	GLSL_DOOM_LIGHT_EQUATION \
+	"void main(void) {\n" \
+		"vec4 texel = texture2D(tex, gl_TexCoord[0].st);\n" \
+		"vec4 base_color = texel * poly_color;\n" \
+		"vec4 final_color = base_color;\n" \
+		GLSL_SOFTWARE_TINT_EQUATION \
+		GLSL_SOFTWARE_FADE_EQUATION \
+		"final_color.a = texel.a * poly_color.a;\n" \
+		"gl_FragColor = final_color;\n" \
+	"}\0"
+#else
 #define GLSL_MODEL_FRAGMENT_SHADER \
 	GLSL_WALL_FUDGES \
 	"#ifdef SRB2_PALETTE_RENDERING\n" \
@@ -210,6 +258,7 @@
 		"gl_FragColor = final_color;\n" \
 	"}\n" \
 	"#endif\0"
+#endif
 
 //
 // Water surface shader
@@ -225,6 +274,34 @@
 	"float cdistort = cos(a) * amp;\n" \
 	"vec4 texel = texture2D(tex, vec2(gl_TexCoord[0].s - sdistort, gl_TexCoord[0].t - cdistort));\n"
 
+#ifdef ANDROID
+// Android: gl4es doesn't handle #ifdef in GLSL properly.
+#define GLSL_WATER_FRAGMENT_SHADER \
+	GLSL_FLOOR_FUDGES \
+	"const float freq = 0.025;\n" \
+	"const float amp = 0.025;\n" \
+	"const float speed = 2.0;\n" \
+	"const float pi = 3.14159;\n" \
+	"uniform sampler2D tex;\n" \
+	"uniform vec4 poly_color;\n" \
+	"uniform vec4 tint_color;\n" \
+	"uniform vec4 fade_color;\n" \
+	"uniform float lighting;\n" \
+	"uniform float fade_start;\n" \
+	"uniform float fade_end;\n" \
+	"uniform float leveltime;\n" \
+	GLSL_DOOM_COLORMAP \
+	GLSL_DOOM_LIGHT_EQUATION \
+	"void main(void) {\n" \
+		GLSL_WATER_TEXEL \
+		"vec4 base_color = texel * poly_color;\n" \
+		"vec4 final_color = base_color;\n" \
+		GLSL_SOFTWARE_TINT_EQUATION \
+		GLSL_SOFTWARE_FADE_EQUATION \
+		"final_color.a = texel.a * poly_color.a;\n" \
+		"gl_FragColor = final_color;\n" \
+	"}\0"
+#else
 #define GLSL_WATER_FRAGMENT_SHADER \
 	GLSL_FLOOR_FUDGES \
 	"const float freq = 0.025;\n" \
@@ -264,6 +341,7 @@
 		"gl_FragColor = final_color;\n" \
 	"}\n" \
 	"#endif\0"
+#endif
 
 //
 // Fog block shader
