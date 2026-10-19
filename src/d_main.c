@@ -776,9 +776,14 @@ void D_SRB2Loop(void)
 		precise_t finishprecise = enterprecise;
 
 		{
-			// Casting the return value of a function is bad practice (apparently)
-			double budget = round((1.0 / R_GetFramerateCap()) * I_GetPrecisePrecision());
-			capbudget = (precise_t) budget;
+			UINT32 cap = R_GetFramerateCap();
+			if (cap == 0)
+				capbudget = 0;
+			else
+			{
+				double budget = round((1.0 / cap) * I_GetPrecisePrecision());
+				capbudget = (precise_t) budget;
+			}
 		}
 
 		I_UpdateTime(cv_timescale.value);
@@ -914,7 +919,7 @@ void D_SRB2Loop(void)
 			// in the case of "match refresh rate" + vsync, don't sleep at all
 			const boolean vsync_with_match_refresh = cv_vidwait.value && cv_fpscap.value == 0;
 
-			if (elapsed > 0 && (INT64)capbudget > elapsed && !vsync_with_match_refresh)
+			if (capbudget > 0 && elapsed > 0 && (INT64)capbudget > elapsed && !vsync_with_match_refresh)
 			{
 				I_SleepDuration(capbudget - (finishprecise - enterprecise));
 			}
