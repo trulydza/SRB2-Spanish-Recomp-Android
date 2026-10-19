@@ -1,8 +1,8 @@
-# SRB2 en español (recompilación v2.2.15)
+# SRB2 en español (Port para Android v2.2.15)
 
-Traducción al español de Sonic Robo Blast 2 hecha directamente en el código C del juego, sobre la versión 2.2.15.
+Traducción al español de Sonic Robo Blast 2 hecha directamente en el código C del juego, adaptada y compilada para dispositivos Android sobre la versión 2.2.15.
 
-Los textos están dentro del ejecutable, no en un addon de Lua o SOC. Por eso se puede entrar a servidores vanilla sin que el juego pida cargar archivos extra. Además hay un pk3 opcional con gráficos y fuentes traducidos (`srb2_spanish_gfx.pk3`), que es solo cosmético.
+Los textos están integrados nativamente en el motor (dentro del binario nativo `libsrb2.so`), no en un addon de Lua o SOC. Por eso se puede entrar a servidores vanilla sin que el juego pida cargar archivos extra. Además incluye controles táctiles virtuales en pantalla, renderizado por hardware mediante OpenGL ES (gl4es) y el addon gráfico con fuentes acentuadas (`srb2_spanish_gfx.pk3`) empaquetado y cargado automáticamente de fábrica.
 
 ## Qué está traducido
 
@@ -12,38 +12,65 @@ Los textos están dentro del ejecutable, no en un addon de Lua o SOC. Por eso se
 - Tutorial completo: las 51 páginas de diálogo de Amy Rose y todos los carteles del mapa.
 - Los 7 personajes vanilla: descripciones, habilidades y consejos.
 - Intro completa (las 16 páginas), créditos y las frases al salir del juego.
-- Tildes, eñes y signos en las fuentes LTFNT y STCFN. Los glifos vienen en el pk3 de gráficos; sin él, el juego usa un fallback automático.
+- Tildes, eñes y signos en las fuentes LTFNT y STCFN (cargadas automáticamente con el addon de gráficos incluido en la APK).
 
 Los valores de las variables de consola (On/Off, Yes/No) se dejan en inglés a propósito.
 
-## Instalación
+## Instalación en Android
 
-Descarga desde [Releases](https://github.com/trulydza/SRB2-Spanish-Recomp/releases):
+Descarga el APK desde [Releases](https://github.com/trulydza/SRB2-Spanish-Recomp-Android/releases):
 
-- `SRB2_Spanish_Recomp_v2.2.15.zip`
-- `srb2_spanish_gfx.pk3`
+- `SRB2_Spanish_Recomp_v1.3.1_Android.apk`
 
-Hay dos formas de instalarlo:
+### Pasos:
 
-**Sobre tu SRB2 actual.** Descomprime el zip en la carpeta donde tienes SRB2 2.2 y acepta reemplazar los archivos. Se actualizan el ejecutable y las librerías (ahora de 64 bits). Tus partidas y tu configuración no se tocan.
+1. **Instalar el APK**: descárgalo en tu dispositivo Android e instálalo (permite la instalación de aplicaciones de orígenes desconocidos si tu navegador o gestor de archivos te lo solicita).
+2. **Primer inicio**: abre la aplicación una vez. Esto creará la estructura de directorios necesaria en tu almacenamiento (`/sdcard/SRB2/` o `/storage/emulated/0/SRB2/`) e instalará los archivos de configuración y gráficos en español.
+3. **Permiso de almacenamiento**: concede el permiso de acceso a todos los archivos (`MANAGE_EXTERNAL_STORAGE`) cuando el sistema lo pida, para que la app pueda guardar tu progreso, partidas y configuraciones.
+4. **Copiar los archivos base del juego**: copia los 4 archivos de datos originales de la versión 2.2.15 de SRB2 dentro de la carpeta `/sdcard/SRB2/`:
+   - `srb2.pk3`
+   - `zones.pk3`
+   - `characters.pk3`
+   - `music.pk3`
 
-**En una carpeta aparte.** Extrae el zip en una carpeta nueva (por ejemplo `SRB2 Español`) y copia ahí desde tu juego original `srb2.pk3`, `zones.pk3`, `characters.pk3` y `music.pk3`.
+*(Nota: por motivos legales de derechos de autor de SEGA y Sonic Team Junior, estos 4 archivos de assets comerciales no se redistribuyen empaquetados y se obtienen de una instalación de SRB2 de PC o de su web oficial).*
 
-Después, pon `srb2_spanish_gfx.pk3` dentro de la carpeta `addons/` (créala si no existe).
+5. **¡Listo para jugar!**: abre de nuevo el juego y disfruta de Sonic Robo Blast 2 completamente en español en tu móvil o tablet.
 
-Para jugar:
+## Ajustes y Controles Táctiles
 
-- `Jugar_online.bat` carga los textos y los gráficos traducidos. Sirve tanto en solitario como en servidores.
+- **Estilo de juego optimizado**: configurado de fábrica con controles en modo **Manual** y parámetros de cámara adaptados (`cam_dist 256`, `cam_height 60`) para mayor visibilidad con mandos táctiles.
+- **Tasa de refresco**: tasa de fotogramas sin límite artificial (`fpscap Unlimited`) para pantallas móviles de 90 Hz y 120 Hz, con medidor discreto de FPS activado (`showfps Compact`).
+- **Addons y mods**: puedes agregar addons de la comunidad (`.pk3` y `.wad`) copiándolos a la carpeta `/sdcard/SRB2/addons/`.
 
-> **Aviso:** actualmente el proyecto se trabaja y soporta **únicamente con `Jugar_online.bat`**. Los lanzadores `Jugar_traducido.bat` y `Jugar_vanilla.bat` quedan como legado y ya no se incluyen en el ZIP.
+## Compilar desde el código fuente
 
-## Compilar y documentación técnica
+### Requisitos:
+- Android SDK (Platform 34 o 36)
+- Android NDK (r25c o superior)
+- CMake 3.22.1
+- JDK 17
 
-La arquitectura, las reglas de traducción, el historial de lotes, los pasos para compilar y la lista de tareas pendientes están en [`GUIA.md`](./GUIA.md).
+### Pasos de compilación:
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/trulydza/SRB2-Spanish-Recomp-Android.git
+cd SRB2-Spanish-Recomp-Android/android-port
+
+# 2. Descargar dependencias nativas (SDL2, SDL2_mixer, curl, mbedTLS)
+chmod +x setup_deps.sh
+./setup_deps.sh
+
+# 3. Compilar APK Release
+./gradlew assembleRelease
+```
+El APK resultante se genera en `android-port/app/build/outputs/apk/release/app-release.apk`.
 
 ## Créditos
 
 - Traducción y adaptación: Daza ([@trulydza](https://github.com/trulydza))
-- Juego base: Sonic Team Junior ([STJr/SRB2](https://github.com/STJr/SRB2))
+- Port Android de referencia: thegreatbbd94-ux ([thegreatbbd94-ux/SRB2-Android-Port](https://github.com/thegreatbbd94-ux/SRB2-Android-Port)) y SRB2-Mobile
+- Juego base y motor: Sonic Team Junior ([STJr/SRB2](https://github.com/STJr/SRB2))
+- Capa gráfica OpenGL ES: gl4es por ptitSeb
 
 Licencia GPL-2.0, igual que el juego original.
