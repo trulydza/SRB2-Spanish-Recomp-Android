@@ -9852,8 +9852,13 @@ consvar_t cv_cam2_adjust = CVAR_INIT ("cam2_adjust", "On", CV_SAVE|CV_ALLOWLUA, 
 // [standard vs simple][p1 or p2]
 consvar_t cv_cam_savedist[2][2] = {
 	{ // standard
+#ifdef ANDROID
+		CVAR_INIT ("cam_dist", "256", CV_FLOAT|CV_SAVE|CV_CALL|CV_ALLOWLUA, campos_cons_t, CV_UpdateCamDist),
+		CVAR_INIT ("cam2_dist", "192", CV_FLOAT|CV_SAVE|CV_CALL|CV_ALLOWLUA, campos_cons_t, CV_UpdateCam2Dist),
+#else
 		CVAR_INIT ("cam_dist", "192", CV_FLOAT|CV_SAVE|CV_CALL|CV_ALLOWLUA, campos_cons_t, CV_UpdateCamDist),
 		CVAR_INIT ("cam2_dist", "192", CV_FLOAT|CV_SAVE|CV_CALL|CV_ALLOWLUA, campos_cons_t, CV_UpdateCam2Dist),
+#endif
 	},
 	{ // simple
 		CVAR_INIT ("cam_simpledist", "256", CV_FLOAT|CV_SAVE|CV_CALL|CV_ALLOWLUA, campos_cons_t, CV_UpdateCamDist),
@@ -9863,8 +9868,13 @@ consvar_t cv_cam_savedist[2][2] = {
 };
 consvar_t cv_cam_saveheight[2][2] = {
 	{ // standard
+#ifdef ANDROID
+		CVAR_INIT ("cam_height", "60", CV_FLOAT|CV_SAVE|CV_CALL|CV_ALLOWLUA, campos_cons_t, CV_UpdateCamDist),
+		CVAR_INIT ("cam2_height", "40", CV_FLOAT|CV_SAVE|CV_CALL|CV_ALLOWLUA, campos_cons_t, CV_UpdateCam2Dist),
+#else
 		CVAR_INIT ("cam_height", "40", CV_FLOAT|CV_SAVE|CV_CALL|CV_ALLOWLUA, campos_cons_t, CV_UpdateCamDist),
 		CVAR_INIT ("cam2_height", "40", CV_FLOAT|CV_SAVE|CV_CALL|CV_ALLOWLUA, campos_cons_t, CV_UpdateCam2Dist),
+#endif
 	},
 	{ // simple
 		CVAR_INIT ("cam_simpleheight", "60", CV_FLOAT|CV_SAVE|CV_CALL|CV_ALLOWLUA, campos_cons_t, CV_UpdateCamDist),

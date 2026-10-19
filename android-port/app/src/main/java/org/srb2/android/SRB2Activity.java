@@ -217,6 +217,15 @@ public class SRB2Activity extends SDLActivity {
                         Log.i(TAG, "Copying asset: " + filename);
                         copyAsset(am, "srb2data/" + filename, destFile);
                     }
+                    if (filename.equals("config.cfg")) {
+                        File homeDir = new File(dataDir, ".srb2");
+                        homeDir.mkdirs();
+                        File homeConfig = new File(homeDir, "config.cfg");
+                        if (!homeConfig.exists()) {
+                            Log.i(TAG, "Installing default config to: " + homeConfig.getAbsolutePath());
+                            copyAsset(am, "srb2data/" + filename, homeConfig);
+                        }
+                    }
                 }
             }
         } catch (IOException e) {

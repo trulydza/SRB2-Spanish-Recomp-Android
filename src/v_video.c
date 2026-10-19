@@ -43,7 +43,11 @@ UINT8 *screens[5];
 // screens[4] = fade screen end, postimage tempoarary buffer
 
 static CV_PossibleValue_t ticrate_cons_t[] = {{0, "No"}, {1, "Full"}, {2, "Compact"}, {0, NULL}};
+#ifdef ANDROID
+consvar_t cv_ticrate = CVAR_INIT ("showfps", "Compact", CV_SAVE, ticrate_cons_t, NULL);
+#else
 consvar_t cv_ticrate = CVAR_INIT ("showfps", "No", CV_SAVE, ticrate_cons_t, NULL);
+#endif
 
 static void CV_palette_OnChange(void);
 

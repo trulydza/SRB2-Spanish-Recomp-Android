@@ -445,7 +445,11 @@ static CV_PossibleValue_t serversort_cons_t[] = {
 consvar_t cv_serversort = CVAR_INIT ("serversort", "Ping", CV_HIDEN | CV_CALL, serversort_cons_t, M_SortServerList);
 
 // first time memory
+#ifdef ANDROID
+consvar_t cv_tutorialprompt = CVAR_INIT ("tutorialprompt", "Off", CV_SAVE, CV_OnOff, NULL);
+#else
 consvar_t cv_tutorialprompt = CVAR_INIT ("tutorialprompt", "On", CV_SAVE, CV_OnOff, NULL);
+#endif
 
 // autorecord demos for time attack
 static consvar_t cv_autorecord = CVAR_INIT ("autorecord", "Yes", 0, CV_YesNo, NULL);

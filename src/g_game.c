@@ -340,7 +340,11 @@ consvar_t cv_analog[2] = {
 	CVAR_INIT ("sessionanalog2", "Off", CV_CALL|CV_NOSHOWHELP, CV_OnOff, Analog2_OnChange),
 };
 consvar_t cv_useranalog[2] = {
+#ifdef ANDROID
+	CVAR_INIT ("configanalog", "Off", CV_SAVE|CV_CALL|CV_NOSHOWHELP, CV_OnOff, UserAnalog_OnChange),
+#else
 	CVAR_INIT ("configanalog", "On", CV_SAVE|CV_CALL|CV_NOSHOWHELP, CV_OnOff, UserAnalog_OnChange),
+#endif
 	CVAR_INIT ("configanalog2", "On", CV_SAVE|CV_CALL|CV_NOSHOWHELP, CV_OnOff, UserAnalog2_OnChange),
 };
 
@@ -350,7 +354,11 @@ consvar_t cv_directionchar[2] = {
 	CVAR_INIT ("directionchar", "Movement", CV_SAVE|CV_CALL, directionchar_cons_t, DirectionChar_OnChange),
 	CVAR_INIT ("directionchar2", "Movement", CV_SAVE|CV_CALL, directionchar_cons_t, DirectionChar2_OnChange),
 };
+#ifdef ANDROID
+consvar_t cv_autobrake = CVAR_INIT ("autobrake", "Off", CV_SAVE|CV_CALL, CV_OnOff, AutoBrake_OnChange);
+#else
 consvar_t cv_autobrake = CVAR_INIT ("autobrake", "On", CV_SAVE|CV_CALL, CV_OnOff, AutoBrake_OnChange);
+#endif
 consvar_t cv_autobrake2 = CVAR_INIT ("autobrake2", "On", CV_SAVE|CV_CALL, CV_OnOff, AutoBrake2_OnChange);
 
 // hi here's some new controls

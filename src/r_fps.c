@@ -39,7 +39,11 @@ static CV_PossibleValue_t fpscap_cons_t[] = {
 	{0, "Match refresh rate"},
 	{0, NULL}
 };
+#ifdef ANDROID
+consvar_t cv_fpscap = CVAR_INIT ("fpscap", "Unlimited", CV_SAVE, fpscap_cons_t, NULL);
+#else
 consvar_t cv_fpscap = CVAR_INIT ("fpscap", "Match refresh rate", CV_SAVE, fpscap_cons_t, NULL);
+#endif
 
 ps_metric_t ps_interp_frac = {0};
 ps_metric_t ps_interp_lag = {0};
