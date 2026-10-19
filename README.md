@@ -33,9 +33,22 @@ Descarga el APK desde [Releases](https://github.com/trulydza/SRB2-Spanish-Recomp
    - `characters.pk3`
    - `music.pk3`
 
-*(Nota: por motivos legales de derechos de autor de SEGA y Sonic Team Junior, estos 4 archivos de assets comerciales no se redistribuyen empaquetados y se obtienen de una instalación de SRB2 de PC o de su web oficial).*
+### ¿Cómo obtener los archivos base?
 
-5. **¡Listo para jugar!**: abre de nuevo el juego y disfruta de Sonic Robo Blast 2 completamente en español en tu móvil o tablet.
+Por motivos de derechos de autor (copyright de SEGA y Sonic Team Junior sobre músicas, mapas y sprites), estos archivos no se redistribuyen dentro del APK. Puedes obtenerlos de forma completamente gratuita de dos maneras:
+
+- **Opción A — Directamente desde el móvil (sin PC):**
+  1. Entra a la web oficial de descargas: [srb2.org/download](https://www.srb2.org/download/) y descarga el archivo comprimido **Windows (Full .zip)** de la versión 2.2.15.
+  2. Abre el archivo `.zip` descargado utilizando el explorador de archivos de tu móvil o una aplicación gratuita como *ZArchiver* o *RAR*.
+  3. Extrae únicamente los 4 archivos (`srb2.pk3`, `zones.pk3`, `characters.pk3` y `music.pk3`).
+  4. Muévelos a la carpeta `SRB2` en la raíz de tu almacenamiento interno (`/sdcard/SRB2/`).
+
+- **Opción B — Desde tu PC (si ya juegas a SRB2):**
+  1. Abre la carpeta donde tienes instalado SRB2 2.2.15 en tu ordenador.
+  2. Localiza los 4 archivos (`srb2.pk3`, `zones.pk3`, `characters.pk3` y `music.pk3`).
+  3. Pásalos a tu teléfono mediante cable USB, tarjeta SD o servicio en la nube y colócalos dentro de la carpeta `SRB2`.
+
+5. **¡Listo para jugar!**: abre de nuevo la app y disfruta de Sonic Robo Blast 2 en español en tu móvil o tablet.
 
 ## Ajustes y Controles Táctiles
 
