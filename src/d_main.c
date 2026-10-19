@@ -1207,6 +1207,18 @@ static void IdentifyVersion(void)
 		//MUSICTEST("patch_music.pk3")
 	}
 #endif
+
+	// Spanish Recomp: Cargar automaticamente el addon grafico si esta presente
+	{
+		const char *gfxpath = va(pandf, srb2waddir, "srb2_spanish_gfx.pk3");
+		FILE *gfxf = fopen(gfxpath, "rb");
+		if (gfxf)
+		{
+			fclose(gfxf);
+			CONS_Printf("Loading Spanish graphics addon: %s\n", gfxpath);
+			D_AddFile(&startupwadfiles, gfxpath);
+		}
+	}
 }
 
 static void
